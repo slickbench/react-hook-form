@@ -532,29 +532,9 @@ function append(data, value) {
     return [...data, ...convertToArrayPayload(value)];
 }
 
+var structuredClone = require('realistic-structured-clone');
 function cloneObject(data) {
-    let copy;
-    const isArray = Array.isArray(data);
-    if (data instanceof Date) {
-        copy = new Date(data);
-    }
-    else if (data instanceof Set) {
-        copy = new Set(data);
-    }
-    else if (isArray || isObject(data)) {
-        copy = isArray ? [] : {};
-        for (const key in data) {
-            if (isFunction(data[key])) {
-                copy = data;
-                break;
-            }
-            copy[key] = cloneObject(data[key]);
-        }
-    }
-    else {
-        return data;
-    }
-    return copy;
+    return structuredClone(data);
 }
 
 var fillEmptyArray = (value) => Array.isArray(value) ? value.map(() => undefined) : undefined;
